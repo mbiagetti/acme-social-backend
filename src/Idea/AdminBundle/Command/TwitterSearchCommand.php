@@ -47,7 +47,7 @@ class TwitterSearchCommand extends ContainerAwareCommand {
                 $status['created_at'],
             );
 //            var_dump($status);die;
-//            var_dump($status['user']);die;
+            var_dump($status['user']);die;
 //            var_dump($status['entities']['hashtags']);die;
         }
 
