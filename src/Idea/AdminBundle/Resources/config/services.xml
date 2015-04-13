@@ -1,16 +1,35 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
+
     <services>
-        <service id="idea_admin.example" class="Idea\AdminBundle\Example">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+
+        <!-- Twitter oauth client -->
+        <service id="twitter.client.oauth" class="%guzzle.plugin.oauth.class%">
+            <argument type="collection">
+                <argument key="consumer_key">%twitter.consumer_key%</argument>
+                <argument key="consumer_secret">%twitter.consumer_secret%</argument>
+                <argument key="token">%twitter.token%</argument>
+                <argument key="token_secret">%twitter.token_secret%</argument>
+            </argument>
         </service>
+
+        <service id="twitter.client" class="%guzzle.client.class%">
+            <tag name="guzzle.client"/>
+            <argument>https://api.twitter.com/1.1/</argument>
+            <call method="addSubscriber">
+                <argument type="service" id="twitter.client.oauth"/>
+            </call>
+        </service>
+
+        <service id="twitter" class="Idea\AdminBundle\Service\Twitter">
+            <argument type="service" id="twitter.client" />
+        </service>
+
     </services>
-    -->
+
 </container>
+
