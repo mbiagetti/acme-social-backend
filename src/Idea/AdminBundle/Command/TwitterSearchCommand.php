@@ -34,11 +34,11 @@ class TwitterSearchCommand extends ContainerAwareCommand {
         foreach($data['statuses'] as $status)
         {
             $tweets[] = array(
-                $this->getTagsAsString($status),
-//                $status['id'],
+//                $this->getTagsAsString($status),
+                $status['id'],
                 $status['text'],
 //                $status['user']['id'],
-                $status['user']['name'],
+  //              $status['user']['name'],
 //                $status['user']['screen_name'],
 //                $status['user']['profile_image_url'],
 //                $status['user']['location'],
@@ -47,12 +47,12 @@ class TwitterSearchCommand extends ContainerAwareCommand {
                 $status['created_at'],
             );
 //            var_dump($status);die;
-            var_dump($status['user']);die;
+//            var_dump($status['user']);die;
 //            var_dump($status['entities']['hashtags']);die;
         }
 
         $table
-            ->setHeaders(array('tags', 'text', 'name', 'created_at'))
+            ->setHeaders(array('id', 'text', 'created_at'))
             ->setRows($tweets)
         ;
         $table->render($output);

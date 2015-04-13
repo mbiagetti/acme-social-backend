@@ -6,6 +6,7 @@ namespace Idea\AdminBundle\Service;
 
 use AppBundle\Entity\Author;
 use AppBundle\Entity\Tag;
+use AppBundle\Entity\Tweet;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class TwitterFactory {
@@ -46,6 +47,22 @@ class TwitterFactory {
         }
 
         return $author;
+    }
+
+
+    public function createPost($status)
+    {
+        $tweet = null;
+
+        if ($status && isset($status['id']))
+        {
+            $tweet = new Tweet();
+            $tweet->setCode($status['id']);
+            $tweet->setText($this->safeCheck($status,'text'));
+            $tweet->setCreatedAt(new \DateTime($this->safeCheck($status,'created_at') ));
+        }
+
+        return $tweet;
     }
 
     /**
