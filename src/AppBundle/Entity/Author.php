@@ -3,11 +3,14 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="author")
+ * @ORM\Table(name="author",
+ *      options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"}
+ * )
  */
 class Author {
 
@@ -19,12 +22,12 @@ class Author {
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable="true")
+     * @ORM\Column(type="string", nullable=false)
      */
     protected $name;
 
     /**
-     * @ORM\Column(type="string", nullable="true")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $screen_name;
 
@@ -34,24 +37,36 @@ class Author {
     protected $code;
 
     /**
-     * @ORM\Column(type="string", nullable="true")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $profile_image_url;
 
     /**
-     * @ORM\Column(type="string", nullable="true")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $location;
 
     /**
-     * @ORM\Column(type="string", nullable="true")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $description;
 
     /**
-     * @ORM\Column(type="datetime", nullable="true")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     protected $created_at;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Tweet", mappedBy="author",cascade={"persist"})
+     */
+    protected $tweets;
+
+    public function __construct()
+    {
+        $this->tweets = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -179,6 +194,34 @@ class Author {
     public function setCreatedAt($created_at)
     {
         $this->created_at = $created_at;
+    }
+
+
+    public function addTweet(Tweet $tweet)
+    {
+        $tweet->setAuthor($this);
+        $this->tweets->add($tweet);
+    }
+
+    public function removeTweet(Tweet $tweet)
+    {
+        $this->tweets->remove($tweet);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTweets()
+    {
+        return $this->tweets;
+    }
+
+    /**
+     * @param mixed $tweets
+     */
+    public function setTweets($tweets)
+    {
+        $this->tweets = $tweets;
     }
 
 }

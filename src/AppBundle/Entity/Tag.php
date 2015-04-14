@@ -3,11 +3,14 @@ namespace AppBundle\Entity;
 
 
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="tag")
+ * @ORM\Table(name="tag",
+ *      options={"collate"="utf8mb4_unicode_ci", "charset"="utf8mb4"}
+ * )
  */
 class Tag {
 
@@ -19,9 +22,19 @@ class Tag {
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $name;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Tweet", mappedBy="tags")
+     */
+    protected $tweets;
+
+    public function __construct()
+    {
+        $this->tweets = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -53,6 +66,18 @@ class Tag {
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    public function addTweet($tweet)
+    {
+        if (!$this->tweets->contains($tweet)) {
+            $this->tweets->add($tweet);
+        }
+    }
+
+    function __toString()
+    {
+        return $this->getName();
     }
 
 
