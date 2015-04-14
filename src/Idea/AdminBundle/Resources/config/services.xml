@@ -29,6 +29,18 @@
             <argument type="service" id="twitter.client" />
         </service>
 
+        <service id="twitter.repository" class="Idea\AdminBundle\Repository\TwitterRepository">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+
+        <service id="twitter.factory" class="Idea\AdminBundle\Service\TwitterFactory">
+        </service>
+
+        <service id="twitter.manager" class="Idea\AdminBundle\Service\TwitterManager">
+            <argument type="service" id="twitter.factory" />
+            <argument type="service" id="twitter.repository" />
+        </service>
+
     </services>
 
 </container>
