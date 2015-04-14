@@ -18,7 +18,9 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new SocialBundle\SocialBundle(),
             new Acme\SocialBundle\AcmeSocialBundle (),
-            new Misd\GuzzleBundle\MisdGuzzleBundle()
+            new Misd\GuzzleBundle\MisdGuzzleBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
