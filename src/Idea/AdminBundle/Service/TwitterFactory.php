@@ -20,7 +20,8 @@ class TwitterFactory {
             {
                 if (isset ($elem['text'])) {
                     $tag = new Tag();
-                    $tag->setName(strtolower($elem['text']));
+                    $str=$elem['text'];
+                    $tag->setName(mb_strtolower($str,  mb_detect_encoding($str)));
                     $ret[] = $tag;
                 }
             }
