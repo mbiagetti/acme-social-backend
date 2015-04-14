@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+
+    <services>
+
+        <!-- Twitter oauth client -->
+        <service id="twitter.client.oauth" class="%guzzle.plugin.oauth.class%">
+            <argument type="collection">
+                <argument key="consumer_key">%twitter.consumer_key%</argument>
+                <argument key="consumer_secret">%twitter.consumer_secret%</argument>
+                <argument key="token">%twitter.token%</argument>
+                <argument key="token_secret">%twitter.token_secret%</argument>
+            </argument>
+        </service>
+
+        <service id="twitter.client" class="%guzzle.client.class%">
+            <tag name="guzzle.client"/>
+            <argument>https://api.twitter.com/1.1/</argument>
+            <call method="addSubscriber">
+                <argument type="service" id="twitter.client.oauth"/>
+            </call>
+        </service>
+
+        <service id="twitter" class="Acme\SocialBundle\Service\Twitter">
+            <argument type="service" id="twitter.client" />
+        </service>
+
+        <service id="twitter.repository" class="Acme\SocialBundle\Repository\TwitterRepository">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+
+        <service id="twitter.factory" class="Acme\SocialBundle\Service\TwitterFactory">
+        </service>
+
+        <service id="twitter.manager" class="Acme\SocialBundle\Service\TwitterManager">
+            <argument type="service" id="twitter.factory" />
+            <argument type="service" id="twitter.repository" />
+        </service>
+
+    </services>
+
+</container>
+

@@ -1,8 +1,5 @@
-idea_admin:
-    resource: "@IdeaAdminBundle/Controller/"
+acme_social:
+    resource: "@AcmeSocialBundle/Controller/"
     type:     annotation
     prefix:   /
 
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
