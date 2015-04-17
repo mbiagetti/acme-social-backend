@@ -30,6 +30,7 @@
             <tr>
                 <th scope="col">{{ thead('tweet', 'text', 'Text') }}</th>
                 <th scope="col">{{ thead('author', 'author', 'Author') }}</th>
+                <th scope="col">tags</th>
                 <th scope="col">{{ thead('tweet', 'created_at', 'Created At') }}</th>
                 <th scope="col">{{ thead('tweet', 'status', 'Status') }}</th>
                 <th scope="col">{{ 'Actions'|trans({}, 'admin') }}</th>
@@ -42,6 +43,7 @@
                     {#<td>{{ tweet.text[:70] }}</td>#}
                     <td>{{ tweet.text }}</td>
                     <td>{{ tweet.author }}</td>
+                    <td>{{ tweet.tags|join(', ') }}</td>
                     <td>{% if tweet.createdat %}{{ tweet.createdat|date('Y-m-d H:i:s') }}{% endif %}</td>
                     <td>{{ ('tweet.status_'~tweet.status)|trans }}</td>
                     <td>
