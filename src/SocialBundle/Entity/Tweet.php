@@ -195,4 +195,9 @@ class Tweet {
         $this->author = $author;
     }
 
+    function __toString()
+    {
+        return $this->getCode();
+    }
+
 }
