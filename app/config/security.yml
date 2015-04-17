@@ -1,9 +1,26 @@
 security:
+    role_hierarchy:
+        ROLE_GUEST_ADMIN:       ROLE_USER
+        ROLE_ADMIN: [ROLE_USER, ROLE_GUEST_ADMIN]
+
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
     providers:
         in_memory:
-            memory: ~
-
+            memory:
+                users:
+                    guest:  { password: guest, roles: [ 'ROLE_GUEST_ADMIN' ] }
+                    admin: { password: %acme_admin_pwd%, roles: [ 'ROLE_ADMIN' ] }
     firewalls:
+        admin:
+            pattern:  ^/admin/
+            provider: in_memory
+            http_basic:
+                realm: "Acme Social Admin Area"
+                provider: in_memory
+
         dev:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false

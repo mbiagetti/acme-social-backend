@@ -23,3 +23,5 @@ parameters:
     twitter.consumer_secret: ~
     twitter.token: ~
     twitter.token_secret: ~
+
+    acme_admin_pwd: ~

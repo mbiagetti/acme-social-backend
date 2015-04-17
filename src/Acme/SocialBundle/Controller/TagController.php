@@ -2,6 +2,7 @@
 
 namespace Acme\SocialBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -83,6 +84,7 @@ class TagController extends Controller
      *
      * @Route("/create", name="admin_tag_create")
      * @Method("POST")
+     * @Security("has_role('ROLE_ADMIN')")
      * @Template("AcmeSocialBundle:Tag:new.html.twig")
      */
     public function createAction(Request $request)
@@ -130,6 +132,7 @@ class TagController extends Controller
      *
      * @Route("/{id}/update", name="admin_tag_update", requirements={"id"="\d+"})
      * @Method("PUT")
+     * @Security("has_role('ROLE_ADMIN')")
      * @Template("AcmeSocialBundle:Tag:edit.html.twig")
      */
     public function updateAction(Tag $tag, Request $request)
@@ -259,6 +262,7 @@ class TagController extends Controller
      *
      * @Route("/{id}/delete", name="admin_tag_delete", requirements={"id"="\d+"})
      * @Method("DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteAction(Tag $tag, Request $request)
     {

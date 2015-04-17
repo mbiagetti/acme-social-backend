@@ -1,3 +1,5 @@
 # This file is auto-generated during the composer install
 parameters:
     database_name: backend_test
+    acme_admin_pwd: test
+

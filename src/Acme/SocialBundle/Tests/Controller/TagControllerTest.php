@@ -6,9 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TagControllerTest extends WebTestCase
 {
-    public function testCreate()
+    protected function getClient()
     {
-        $client = static::createClient();
+        // Create a new client to browse the application
+        return static::createClient(array(), array(
+            "PHP_AUTH_USER" => "admin",
+            "PHP_AUTH_PW"   => "test"
+        ));
+    }
+        public function testCreate()
+    {
+        $client = $this->getClient();
         $crawler = $client->request('GET', '/admin/tag/');
         $this->assertCount(0, $crawler->filter('table.records_list tbody tr'));
         $crawler = $client->click($crawler->filter('.new_entry a')->link());
@@ -23,7 +31,7 @@ class TagControllerTest extends WebTestCase
 
     public function testCreateError()
     {
-        $client = static::createClient();
+        $client = $this->getClient();
         $crawler = $client->request('GET', '/admin/tag/new');
         $form = $crawler->filter('form button[type="submit"]')->form();
         $crawler = $client->submit($form);
@@ -36,7 +44,7 @@ class TagControllerTest extends WebTestCase
      */
     public function testEdit()
     {
-        $client = static::createClient();
+        $client = $this->getClient();
         $crawler = $client->request('GET', '/admin/tag/');
         $this->assertCount(1, $crawler->filter('table.records_list tbody tr:contains("First value")'));
         $this->assertCount(0, $crawler->filter('table.records_list tbody tr:contains("Changed")'));
@@ -57,7 +65,7 @@ class TagControllerTest extends WebTestCase
      */
     public function testEditError()
     {
-        $client = static::createClient();
+        $client = $this->getClient();
         $crawler = $client->request('GET', '/admin/tag/');
         $crawler = $client->click($crawler->filter('table.records_list tbody tr td .btn-group a')->eq(1)->link());
         $form = $crawler->filter('form button[type="submit"]')->form(array(
@@ -73,7 +81,7 @@ class TagControllerTest extends WebTestCase
      */
     public function testDelete()
     {
-        $client = static::createClient();
+        $client = $this->getClient();
         $crawler = $client->request('GET', '/admin/tag/');
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertCount(1, $crawler->filter('table.records_list tbody tr'));
@@ -88,7 +96,7 @@ class TagControllerTest extends WebTestCase
      */
     public function testFilter()
     {
-        $client = static::createClient();
+        $client = $this->getClient();
         $crawler = $client->request('GET', '/admin/tag/');
         $form = $crawler->filter('div#filter form button[type="submit"]')->form(array(
             'tag_filter[name]' => 'First%',
@@ -105,7 +113,7 @@ class TagControllerTest extends WebTestCase
      */
     public function testSort()
     {
-        $client = static::createClient();
+        $client = $this->getClient();
         $crawler = $client->request('GET', '/admin/tag/');
         $this->assertCount(1, $crawler->filter('table.records_list th')->eq(0)->filter('a i.fa-sort'));
         $crawler = $client->click($crawler->filter('table.records_list th a')->link());
