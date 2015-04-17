@@ -20,7 +20,8 @@
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
         "misd/guzzle-bundle": "~1.0",
-        "knplabs/knp-paginator-bundle": "~2.4"
+        "knplabs/knp-paginator-bundle": "~2.4",
+        "lexik/form-filter-bundle": "~3.0"
     },
     "require-dev": {
         "phake/phake": "dev-master",
