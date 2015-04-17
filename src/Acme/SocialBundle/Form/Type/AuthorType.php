@@ -2,12 +2,11 @@
 
 namespace Acme\SocialBundle\Form\Type;
 
-use Lexik\Bundle\FormFilterBundle\Filter\FilterOperands;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class TagFilterType extends AbstractType
+class AuthorType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -16,7 +15,13 @@ class TagFilterType extends AbstractType
     {
         $builder
         
-            ->add('name', 'filter_text',array('condition_pattern'=> FilterOperands::STRING_BOTH))
+            ->add('name')
+            ->add('screen_name')
+            ->add('code')
+            ->add('profile_image_url')
+            ->add('location')
+            ->add('description')
+            ->add('created_at')
         ;
     }
 
@@ -26,10 +31,7 @@ class TagFilterType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'        => 'SocialBundle\Entity\Tag',
-            'csrf_protection'   => false,
-            'validation_groups' => array('filter'),
-            'method'            => 'GET',
+            'data_class' => 'SocialBundle\Entity\Author',
         ));
     }
 
@@ -38,6 +40,6 @@ class TagFilterType extends AbstractType
      */
     public function getName()
     {
-        return 'tag_filter';
+        return 'author';
     }
 }
