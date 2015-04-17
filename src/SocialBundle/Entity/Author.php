@@ -224,4 +224,9 @@ class Author {
         $this->tweets = $tweets;
     }
 
+    function __toString()
+    {
+        return sprintf("%s (%s)",$this->getScreenName(),$this->getName());
+    }
+
 }
