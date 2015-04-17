@@ -62,6 +62,40 @@ class TweetControllerTest extends WebTestCase
     /**
      * @depends testCreate
      */
+    public function testApprove()
+    {
+        $client = $this->getClient();
+        $crawler = $client->request('GET', '/admin/tweet/');
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertCount(1, $crawler->filter('table.records_list tbody tr'));
+        $crawler = $client->click($crawler->filter('table.records_list tbody tr td .btn-group a')->eq(1)->link());
+        $client->submit($crawler->filter('form.approve-tweet button[type="submit"]')->form());
+        $this->assertTrue($client->getResponse()->isRedirect());
+        $client->followRedirect();
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testReject()
+    {
+        $client = $this->getClient();
+        $crawler = $client->request('GET', '/admin/tweet/');
+        $this->assertTrue($client->getResponse()->isSuccessful());
+        $this->assertCount(1, $crawler->filter('table.records_list tbody tr'));
+        $crawler = $client->click($crawler->filter('table.records_list tbody tr td .btn-group a')->eq(1)->link());
+        $client->submit($crawler->filter('form.reject-tweet button[type="submit"]')->form());
+        $this->assertTrue($client->getResponse()->isRedirect());
+        $client->followRedirect();
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+
+
+    /**
+     * @depends testCreate
+     */
     public function testDelete()
     {
         $client = $this->getClient();
@@ -103,4 +137,6 @@ class TweetControllerTest extends WebTestCase
         $this->assertTrue($client->getResponse()->isSuccessful());
         $this->assertCount(1, $crawler->filter('table.records_list th a i.fa-sort-up'));
     }
+
+
 }

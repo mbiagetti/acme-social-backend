@@ -292,4 +292,37 @@ class TweetController extends Controller
         ;
     }
 
+    /**
+     * Approve a Tweet entity.
+     *
+     * @Route("/{id}/approve", name="admin_tweet_approve", requirements={"id"="\d+"})
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Method("POST")
+     */
+    public function approveAction(Tweet $tweet)
+    {
+        $tweet->approve();
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('admin_tweet'));
+    }
+
+    /**
+     * Reject a Tweet entity.
+     *
+     * @Route("/{id}/reject", name="admin_tweet_reject", requirements={"id"="\d+"})
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Method("POST")
+     */
+    public function rejectAction(Tweet $tweet)
+    {
+        $tweet->reject();
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('admin_tweet'));
+    }
+
+
 }

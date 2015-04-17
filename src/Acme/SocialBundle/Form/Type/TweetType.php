@@ -2,6 +2,7 @@
 
 namespace Acme\SocialBundle\Form\Type;
 
+use SocialBundle\Entity\Tweet;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -18,7 +19,12 @@ class TweetType extends AbstractType
             ->add('text')
             ->add('code')
             ->add('created_at')
-            ->add('status')
+            ->add('status','choice', array(
+                'choices' => array(
+                    Tweet::PENDING => 'tweet.status_'.Tweet::PENDING,
+                    Tweet::ACCEPTED => 'Approved',
+                    Tweet::DECLINED => 'Declined',
+                )))
             ->add('tags')
             ->add('author')
         ;

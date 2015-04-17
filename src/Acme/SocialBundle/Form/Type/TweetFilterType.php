@@ -3,6 +3,7 @@
 namespace Acme\SocialBundle\Form\Type;
 
 use Lexik\Bundle\FormFilterBundle\Filter\FilterOperands;
+use SocialBundle\Entity\Tweet;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -19,7 +20,13 @@ class TweetFilterType extends AbstractType
         
             ->add('text', 'filter_text',array('condition_pattern'=> FilterOperands::STRING_BOTH))
             ->add('created_at', 'filter_date_range')
-            ->add('status', 'filter_text')
+            ->add('status','filter_choice', array(
+                'choices' => array(
+                    Tweet::PENDING =>  'tweet.status_'.Tweet::PENDING,
+                    Tweet::ACCEPTED => 'tweet.status_'.Tweet::ACCEPTED,
+                    Tweet::DECLINED => 'tweet.status_'.Tweet::DECLINED,
+                )))
+
             ->add('tags', 'filter_entity', array('class' => 'SocialBundle\Entity\Tag',
                 'apply_filter' => function(QueryInterface $filterQuery, $field, $values)
                 {

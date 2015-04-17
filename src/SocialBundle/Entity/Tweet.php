@@ -202,4 +202,24 @@ class Tweet {
         return $this->getCode();
     }
 
+    public function approve()
+    {
+        $this->setStatus(self::ACCEPTED);
+    }
+
+    public function isApproved()
+    {
+        return self::ACCEPTED == $this->getStatus();
+    }
+
+    public function reject()
+    {
+        $this->setStatus(self::DECLINED);
+    }
+
+    public function isRejected()
+    {
+        return self::DECLINED == $this->getStatus();
+    }
+
 }

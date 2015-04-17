@@ -1,0 +1,14 @@
+{% set class = "btn btn-danger" %}
+{% set path = path('admin_tweet_reject', { 'id': object.id}) %}
+
+{% if object.rejected  %}
+    {% set class = "btn btn-danger disabled" %}
+    {% set path = "#" %}
+{% endif %}
+
+<form class="reject-tweet" method="POST" action="{{ path }}">
+    <button type="submit" class="{{ class }}">{{ 'reject'|trans({}, 'admin') }}</button>
+</form>
+
+
+

@@ -33,15 +33,17 @@
                 <th scope="col">{{ thead('tweet', 'created_at', 'Created At') }}</th>
                 <th scope="col">{{ thead('tweet', 'status', 'Status') }}</th>
                 <th scope="col">{{ 'Actions'|trans({}, 'admin') }}</th>
+                <th scope="col">{{ 'Admin Actions'|trans({}, 'admin') }}</th>
             </tr>
         </thead>
         <tbody>
             {% for tweet in paginator %}
                 <tr>
+                    {#<td>{{ tweet.text[:70] }}</td>#}
                     <td>{{ tweet.text }}</td>
                     <td>{{ tweet.author }}</td>
                     <td>{% if tweet.createdat %}{{ tweet.createdat|date('Y-m-d H:i:s') }}{% endif %}</td>
-                    <td>{{ tweet.status }}</td>
+                    <td>{{ ('tweet.status_'~tweet.status)|trans }}</td>
                     <td>
                         <div class="btn-group">
                             <a class="btn btn-default btn-sm" href="{{ path('admin_tweet_show', {id: tweet.id}) }}">
@@ -52,6 +54,14 @@
                             </a>
                         </div>
                     </td>
+                    <td>
+                        <div class="btn-group">
+                            {{ include('AcmeSocialBundle:Tweet:_reject.html.twig', {'object': tweet}) }}
+                            {{ include('AcmeSocialBundle:Tweet:_approve.html.twig', {'object': tweet}) }}
+                        </div>
+
+                    </td>
+
                 </tr>
             {% endfor %}
         </tbody>

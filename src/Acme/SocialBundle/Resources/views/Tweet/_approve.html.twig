@@ -1,0 +1,12 @@
+{% set class = "btn btn-primary" %}
+{% set path = path('admin_tweet_approve', { 'id': object.id}) %}
+
+{% if object.approved  %}
+    {% set class = "btn btn-primary disabled" %}
+    {% set path = "#" %}
+{% endif %}
+
+<form class="approve-tweet" method="POST" action="{{ path }}">
+    <button type="submit" class="{{ class }}">{{ 'approve'|trans({}, 'admin') }}</button>
+</form>
+
