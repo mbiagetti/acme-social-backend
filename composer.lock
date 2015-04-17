@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "689e05855bd8ac49a657bb643051cb42",
+    "hash": "28fc900a3c4bcbca0a7731a102c5e5d0",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2440,6 +2440,61 @@
                 "xunit"
             ],
             "time": "2015-04-02 05:36:41"
+        },
+        {
+            "name": "pugx/generator-bundle",
+            "version": "v2.4.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PUGX/PUGXGeneratorBundle.git",
+                "reference": "1530db6ab7b8b9a5602c8e279c271c0d9b716f8b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PUGX/PUGXGeneratorBundle/zipball/1530db6ab7b8b9a5602c8e279c271c0d9b716f8b",
+                "reference": "1530db6ab7b8b9a5602c8e279c271c0d9b716f8b",
+                "shasum": ""
+            },
+            "require": {
+                "sensio/generator-bundle": "~2.5"
+            },
+            "suggest": {
+                "knplabs/knp-paginator-bundle": "Needed for optional pagination",
+                "lexik/form-filter-bundle": "Needed for optional filters"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PUGX\\GeneratorBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Leonardo Proietti",
+                    "email": "leonardo.proietti@gmail.com"
+                },
+                {
+                    "name": "Massimiliano Arione",
+                    "email": "garakkio@gmail.com",
+                    "homepage": "http://massimilianoarione.it"
+                }
+            ],
+            "description": "Extension of SensioGeneratorBundle",
+            "homepage": "http://pugx.org/",
+            "keywords": [
+                "code generation",
+                "symfony"
+            ],
+            "time": "2015-04-03 07:26:15"
         },
         {
             "name": "sebastian/comparator",
