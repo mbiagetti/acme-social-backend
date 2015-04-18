@@ -350,7 +350,7 @@ class ApiController extends Controller
 
     private function getJsonResponse($data)
     {
-        return new JsonResponse($data);
+        return new JsonResponse($data,200,array('Access-Control-Allow-Origin'=> '*'));
     }
 
     private function getSocialUrlForAuthor($author)

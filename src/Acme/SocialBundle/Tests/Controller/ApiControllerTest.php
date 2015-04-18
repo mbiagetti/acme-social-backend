@@ -88,12 +88,19 @@ class ApiControllerTest extends WebTestCase {
     {
         $this->assertEquals(
             200, $this->client->getResponse()->getStatusCode(),
-            $this->client->getResponse()->getContent()
+            "Check for ok response"
         );
         $this->assertTrue(
             $this->client->getResponse()->headers->contains('Content-Type', 'application/json'),
-            $this->client->getResponse()->headers
+            "Check resource is of json type"
         );
+
+        $this->assertTrue(
+            $this->client->getResponse()->headers->contains('Access-Control-Allow-Origin', '*'),
+            "Check resource available for all domains"
+        );
+
+
     }
 
 }
