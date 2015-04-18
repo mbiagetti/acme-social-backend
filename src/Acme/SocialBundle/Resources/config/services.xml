@@ -33,6 +33,10 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
+        <service id="acme_social.api_repository" class="Acme\SocialBundle\Repository\ApiRepository">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+
         <service id="twitter.factory" class="Acme\SocialBundle\Service\TwitterFactory">
         </service>
 

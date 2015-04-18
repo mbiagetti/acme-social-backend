@@ -54,8 +54,7 @@ class ApiController extends Controller
         $page = $request->get(self::PAGE_CODE,self::PAGE_VALUE);
         $limit = $request->get(self::LIMIT_CODE,self::LIMIT_VALUE);
 
-        $qb = $this->getDoctrine()->getRepository("SocialBundle:Tweet")->createQueryBuilder("p");
-        $qb->addOrderBy("p.created_at","desc");
+        $qb = $this->get('acme_social.api_repository')->getQueryBuilderForPosts();
         $query = $qb->getQuery();
 
         $pagination = $this
@@ -94,8 +93,7 @@ class ApiController extends Controller
         $page = $request->get(self::PAGE_CODE,self::PAGE_VALUE);
         $limit = $request->get(self::LIMIT_CODE,self::LIMIT_VALUE);
 
-        $qb = $this->getDoctrine()->getRepository("SocialBundle:Author")->createQueryBuilder("p");
-        $qb->addOrderBy("p.created_at","desc");
+        $qb = $this->get('acme_social.api_repository')->getQueryBuilderForAuthors();
         $query = $qb->getQuery();
 
         $pagination = $this
@@ -141,9 +139,7 @@ class ApiController extends Controller
         $page = $request->get(self::PAGE_CODE,self::PAGE_VALUE);
         $limit = $request->get(self::LIMIT_CODE,self::LIMIT_VALUE);
 
-        $qb = $this->getDoctrine()->getRepository("SocialBundle:Tweet")->createQueryBuilder("p");
-        $qb->where('p.author = :author')->setParameter("author",$author->getId());
-        $qb->addOrderBy("p.created_at","desc");
+        $qb = $this->get('acme_social.api_repository')->getQueryBuilderForPostsByAuthor($author);
         $query = $qb->getQuery();
 
         $pagination = $this
@@ -170,8 +166,7 @@ class ApiController extends Controller
         $page = $request->get(self::PAGE_CODE,self::PAGE_VALUE);
         $limit = $request->get(self::LIMIT_CODE,self::LIMIT_VALUE);
 
-        $qb = $this->getDoctrine()->getRepository("SocialBundle:Tag")->createQueryBuilder("p");
-        $qb->addOrderBy("p.name","asc");
+        $qb = $this->get('acme_social.api_repository')->getQueryBuilderForTags();
         $query = $qb->getQuery();
 
         $pagination = $this
@@ -216,10 +211,7 @@ class ApiController extends Controller
         $page = $request->get(self::PAGE_CODE,self::PAGE_VALUE);
         $limit = $request->get(self::LIMIT_CODE,self::LIMIT_VALUE);
 
-        $qb = $this->getDoctrine()->getRepository("SocialBundle:Tweet")->createQueryBuilder("p");
-        $qb->leftJoin("p.tags","t");
-        $qb->where('t = :tag')->setParameter("tag",$tag->getId());
-        $qb->addOrderBy("p.created_at","desc");
+        $qb = $this->get('acme_social.api_repository')->getQueryBuilderForPostsByTag($tag);
         $query = $qb->getQuery();
 
         $pagination = $this
