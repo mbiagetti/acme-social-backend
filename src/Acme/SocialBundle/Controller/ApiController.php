@@ -250,9 +250,13 @@ class ApiController extends Controller
             'text'  => $elem->getText(),
             'author'=> $this->getAuthor($elem->getAuthor()),
             'date'  => $this->formatDate($elem->getCreatedAt()),
-            '_links' =>array(
-                'self'  => $this->generateUrl('acme_social_get_post', array('id'=>$elem->getId() ), true ),
-                'social'=> $this->getSocialUrlForTweet($elem)
+            'social_url' => $this->getSocialUrlForTweet($elem),
+            'links' =>
+                array(
+                    array(
+                        'rel'   => 'self',
+                        'href'  =>   $this->generateUrl('acme_social_get_post', array('id'=>$elem->getId() ), true )
+                    )
             ),
             'tags' => $this->getTags($elem->getTags())
         );
@@ -279,9 +283,16 @@ class ApiController extends Controller
         $ret = array(
             'id' => $tag->getId(),
             'name' => $tag->getName(),
-            '_links' => array(
-                'self' => $this->generateUrl("acme_social_get_tag",array("id" => $tag->getId()),true),
-                'posts' => $this->generateUrl("acme_social_get_tag_post",array("id" => $tag->getId()),true),
+            'links' =>
+                array(
+                    array(
+                        'rel'   => 'self',
+                        'href'  =>  $this->generateUrl("acme_social_get_tag",array("id" => $tag->getId()),true)
+                    ),
+                    array(
+                        'rel'   => 'posts',
+                        'href'  =>  $this->generateUrl("acme_social_get_tag_post",array("id" => $tag->getId()),true)
+                    )
             )
         );
         return $ret;
@@ -303,12 +314,19 @@ class ApiController extends Controller
             'description'=> $author->getDescription(),
             'location' => $author->getLocation(),
             'date'  => $this->formatDate($author->getCreatedAt()),
-            '_links' =>array(
-                'self' => $this->generateUrl('acme_social_get_author',array('id' => $author->getId()),true),
-                'posts' => $this->generateUrl('acme_social_get_author_post',array('id' => $author->getId()),true),
-                'social'=> $this->getSocialUrlForAuthor($author)
-            )
-        );
+            'social_url' => $this->getSocialUrlForAuthor($author),
+            'links' =>
+                array(
+                    array(
+                        'rel'   => 'self',
+                        'href'  => $this->generateUrl('acme_social_get_author',array('id' => $author->getId()),true),
+                    ),
+                    array(
+                        'rel'   => 'posts',
+                        'href'   => $this->generateUrl('acme_social_get_author_post',array('id' => $author->getId()),true),
+                    ),
+                )
+            );
     }
 
     private function getSocialUrlForTweet($elem)
@@ -339,12 +357,22 @@ class ApiController extends Controller
         $pagination['totalPage'] = $paginationData['pageCount'];
         $pagination['totalCount'] = $paginationData['totalCount'];
 
-        if (isset($paginationData['previous']))
-            $pagination['prev'] =  $this->generateUrl($routeName, ($mandatoryParams + array('limit'=>$limit, 'page'=>$paginationData['previous'])),true);
+        $pagination['links'] = array();
+        if (isset($paginationData['previous'])){
+            $elem = array(
+                'rel' => 'prev',
+                'href' =>  $this->generateUrl($routeName, ($mandatoryParams + array('limit'=>$limit, 'page'=>$paginationData['previous'])),true)
+            );
+            $pagination['links'][] = $elem;
+        }
+        if (isset($paginationData['next'])){
+            $elem = array(
+                'rel' => 'next',
+                'href'=>  $this->generateUrl($routeName, ($mandatoryParams + array('limit'=>$limit, 'page'=>$paginationData['next'])),true)
+            );
+            $pagination['links'][] = $elem;
 
-        if (isset($paginationData['next']))
-            $pagination['next'] =  $this->generateUrl($routeName, ($mandatoryParams + array('limit'=>$limit, 'page'=>$paginationData['next'])),true);
-
+        }
         return $pagination;
     }
 

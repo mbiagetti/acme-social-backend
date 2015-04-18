@@ -54,8 +54,8 @@ class ApiControllerTest extends WebTestCase {
         $this->checkJsonResponse();
         $response = $this->client->getResponse();
         $data = json_decode($response->getContent(), true);
-        $postDetailEndPoint = $data['posts'][0]['_links']['self'];
-
+        $filtered = array_filter($data['posts'][0]['links'], function($v) { return $v['rel'] == 'self'; });
+        $postDetailEndPoint = $filtered[0]['href'];
         $this->client->request('GET', $postDetailEndPoint);
         $this->checkJsonResponse();
     }
@@ -66,20 +66,21 @@ class ApiControllerTest extends WebTestCase {
         $this->checkJsonResponse();
         $response = $this->client->getResponse();
         $data = json_decode($response->getContent(), true);
-        $authorDetailEndPoint = $data['authors'][0]['_links']['self'];
+        $filtered = array_filter($data['authors'][0]['links'], function($v) { return $v['rel'] == 'self'; });
+        $authorDetailEndPoint = $filtered[0]['href'];
 
         $this->client->request('GET', $authorDetailEndPoint);
         $this->checkJsonResponse();
     }
 
-    public function tesTagsApi()
+    public function testTagsApi()
     {
         $this->client->request('GET', "/api/tags");
         $this->checkJsonResponse();
         $response = $this->client->getResponse();
         $data = json_decode($response->getContent(), true);
-        $tagDetailEndPoint = $data['tags'][0]['_links']['self'];
-
+        $filtered = array_filter($data['tags'][0]['links'], function($v) { return $v['rel'] == 'self'; });
+        $tagDetailEndPoint = $filtered[0]['href'];
         $this->client->request('GET', $tagDetailEndPoint);
         $this->checkJsonResponse();
     }
