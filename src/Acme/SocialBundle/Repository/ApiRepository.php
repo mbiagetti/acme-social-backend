@@ -4,7 +4,7 @@ namespace Acme\SocialBundle\Repository;
 
 use SocialBundle\Entity\Author;
 use SocialBundle\Entity\Tweet;
-use Test\Fixture\Entity\Shop\Tag;
+use SocialBundle\Entity\Tag;
 
 class ApiRepository
 {

@@ -16,8 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiController extends Controller
 {
 
-    const STANDARD_DATE_FORMAT = 'c';
-
     const PAGE_CODE  = "page";
     const LIMIT_CODE = "limit";
 
@@ -49,7 +47,6 @@ class ApiController extends Controller
     public function postsAction(Request $request )
     {
         $data = array();
-        $contents = array();
 
         $page = $request->get(self::PAGE_CODE,self::PAGE_VALUE);
         $limit = $request->get(self::LIMIT_CODE,self::LIMIT_VALUE);
@@ -57,15 +54,10 @@ class ApiController extends Controller
         $qb = $this->get('acme_social.api_repository')->getQueryBuilderForPosts();
         $query = $qb->getQuery();
 
-        $pagination = $this
-            ->get('knp_paginator')
-            ->paginate($query, $page, $limit);
+        $pagination = $this->get('knp_paginator')->paginate($query, $page, $limit);
 
-        foreach($pagination as $elem)
-            $contents[] = $this->getTweet($elem);
-
-        $data['pagination'] = $this->getPaginationData($pagination->getPaginationData(), 'acme_social_all_posts');
-        $data['posts']=$contents;
+        $data['pagination'] = $this->get('acme_social.api_adapter')->paginationToArray($pagination->getPaginationData(), 'acme_social_all_posts');
+        $data['posts']=$this->get('acme_social.api_adapter')->postsToArray($pagination);
 
         return $this->getJsonResponse($data);
     }
@@ -79,7 +71,7 @@ class ApiController extends Controller
      */
     public function postsDetailAction(Tweet $tweet )
     {
-        return $this->getJsonResponse($this->getTweet($tweet));
+        return $this->getJsonResponse($this->get('acme_social.api_adapter')->postToArray(($tweet)));
     }
 
     /**
@@ -88,7 +80,6 @@ class ApiController extends Controller
     public function authorsAction(Request $request )
     {
         $data = array();
-        $contents = array();
 
         $page = $request->get(self::PAGE_CODE,self::PAGE_VALUE);
         $limit = $request->get(self::LIMIT_CODE,self::LIMIT_VALUE);
@@ -96,16 +87,10 @@ class ApiController extends Controller
         $qb = $this->get('acme_social.api_repository')->getQueryBuilderForAuthors();
         $query = $qb->getQuery();
 
-        $pagination = $this
-            ->get('knp_paginator')
-            ->paginate($query, $page, $limit);
+        $pagination = $this->get('knp_paginator')->paginate($query, $page, $limit);
 
-
-        foreach($pagination as $elem)
-            $contents[] = $this->getAuthor($elem);
-
-        $data['pagination'] = $this->getPaginationData($pagination->getPaginationData(), 'acme_social_all_authors');
-        $data['authors']=$contents;
+        $data['pagination'] = $this->get('acme_social.api_adapter')->paginationToArray($pagination->getPaginationData(), 'acme_social_all_authors');
+        $data['authors']=$this->get('acme_social.api_adapter')->authorsToArray($pagination);
 
         return $this->getJsonResponse($data);
     }
@@ -121,7 +106,7 @@ class ApiController extends Controller
      */
     public function authorDetailAction(Author $author)
     {
-        return $this->getJsonResponse($this->getAuthor($author));
+        return $this->getJsonResponse($this->get('acme_social.api_adapter')->authorToArray($author));
     }
 
     /**
@@ -134,7 +119,6 @@ class ApiController extends Controller
     public function authorPostsAction(Author $author, Request $request)
     {
         $data = array();
-        $contents = array();
 
         $page = $request->get(self::PAGE_CODE,self::PAGE_VALUE);
         $limit = $request->get(self::LIMIT_CODE,self::LIMIT_VALUE);
@@ -142,15 +126,10 @@ class ApiController extends Controller
         $qb = $this->get('acme_social.api_repository')->getQueryBuilderForPostsByAuthor($author);
         $query = $qb->getQuery();
 
-        $pagination = $this
-            ->get('knp_paginator')
-            ->paginate($query, $page, $limit);
+        $pagination = $this->get('knp_paginator')->paginate($query, $page, $limit);
 
-        foreach($pagination as $elem)
-            $contents[] = $this->getTweet($elem);
-
-        $data['pagination'] = $this->getPaginationData($pagination->getPaginationData(), 'acme_social_get_author_post', array('id' => $author->getId()));
-        $data['posts']=$contents;
+        $data['pagination'] = $this->get('acme_social.api_adapter')->paginationToArray($pagination->getPaginationData(), 'acme_social_get_author_post', array('id' => $author->getId()));
+        $data['posts']=$this->get('acme_social.api_adapter')->postsToArray($pagination);
 
         return $this->getJsonResponse($data);
 
@@ -162,22 +141,17 @@ class ApiController extends Controller
     public function tagsAction(Request $request )
     {
         $data = array();
-        $contents = array();
+
         $page = $request->get(self::PAGE_CODE,self::PAGE_VALUE);
         $limit = $request->get(self::LIMIT_CODE,self::LIMIT_VALUE);
 
         $qb = $this->get('acme_social.api_repository')->getQueryBuilderForTags();
         $query = $qb->getQuery();
 
-        $pagination = $this
-            ->get('knp_paginator')
-            ->paginate($query, $page, $limit);
+        $pagination = $this->get('knp_paginator')->paginate($query, $page, $limit);
 
-        foreach($pagination as $elem)
-            $contents[] = $this->getTag($elem);
-
-        $data['pagination'] = $this->getPaginationData($pagination->getPaginationData(), 'acme_social_all_tags');
-        $data['tags']=$contents;
+        $data['pagination'] = $this->get('acme_social.api_adapter')->paginationToArray($pagination->getPaginationData(), 'acme_social_all_tags');
+        $data['tags']=$this->get('acme_social.api_adapter')->tagsToArray($pagination);
 
         return $this->getJsonResponse($data);
     }
@@ -191,9 +165,8 @@ class ApiController extends Controller
      */
     public function tagDetailAction(Tag $tag)
     {
-        return $this->getJsonResponse($this->getTag($tag));
+        return $this->getJsonResponse($this->get('acme_social.api_adapter')->tagToArray($tag));
     }
-
 
     /**
      *
@@ -206,7 +179,6 @@ class ApiController extends Controller
     public function tagPostsAction(Tag $tag, Request $request)
     {
         $data = array();
-        $contents = array();
 
         $page = $request->get(self::PAGE_CODE,self::PAGE_VALUE);
         $limit = $request->get(self::LIMIT_CODE,self::LIMIT_VALUE);
@@ -214,168 +186,17 @@ class ApiController extends Controller
         $qb = $this->get('acme_social.api_repository')->getQueryBuilderForPostsByTag($tag);
         $query = $qb->getQuery();
 
-        $pagination = $this
-            ->get('knp_paginator')
-            ->paginate($query, $page, $limit);
+        $pagination = $this->get('knp_paginator')->paginate($query, $page, $limit);
 
-        foreach($pagination as $elem)
-            $contents[] = $this->getTweet($elem);
-
-        $data['pagination'] = $this->getPaginationData($pagination->getPaginationData(), 'acme_social_get_tag_post',array('id' => $tag->getId()));
-        $data['posts']=$contents;
+        $data['pagination'] = $this->get('acme_social.api_adapter')->paginationToArray($pagination->getPaginationData(), 'acme_social_get_tag_post',array('id' => $tag->getId()));
+        $data['posts']= $this->get('acme_social.api_adapter')->postsToArray($pagination);
 
         return $this->getJsonResponse($data);
-
-    }
-
-
-
-    /**
-     * @param $elem \SocialBundle\Entity\Tweet
-     * @return array
-     */
-    private function getTweet($elem)
-    {
-        return array(
-            'id'    => $elem->getId(),
-            'code'  => $elem->getCode(),
-            'text'  => $elem->getText(),
-            'author'=> $this->getAuthor($elem->getAuthor()),
-            'date'  => $this->formatDate($elem->getCreatedAt()),
-            'social_url' => $this->getSocialUrlForTweet($elem),
-            'links' =>
-                array(
-                    array(
-                        'rel'   => 'self',
-                        'href'  =>   $this->generateUrl('acme_social_get_post', array('id'=>$elem->getId() ), true )
-                    )
-            ),
-            'tags' => $this->getTags($elem->getTags())
-        );
-    }
-
-    /**
-     * @param $tags \SocialBundle\Entity\Tag[]
-     * @return array
-     */
-    private function getTags($tags)
-    {
-        $ret = array();
-        foreach($tags as $tag)
-            $ret[] = $this->getTag($tag);
-        return $ret;
-    }
-
-    /**
-     * @param $tag \SocialBundle\Entity\Tag
-     * @return array
-     */
-    private function getTag($tag)
-    {
-        $ret = array(
-            'id' => $tag->getId(),
-            'name' => $tag->getName(),
-            'links' =>
-                array(
-                    array(
-                        'rel'   => 'self',
-                        'href'  =>  $this->generateUrl("acme_social_get_tag",array("id" => $tag->getId()),true)
-                    ),
-                    array(
-                        'rel'   => 'posts',
-                        'href'  =>  $this->generateUrl("acme_social_get_tag_post",array("id" => $tag->getId()),true)
-                    )
-            )
-        );
-        return $ret;
-    }
-
-
-    /**
-     * @param $author \SocialBundle\Entity\Author
-     * @return array
-     */
-    private function getAuthor($author)
-    {
-        return array(
-            'id'       => $author->getId(),
-            'name'      => $author->getName(),
-            'code'      => $author->getCode(),
-            'screen_name'=> $author->getScreenName(),
-            'profile_image_url'=> $author->getProfileImageUrl(),
-            'description'=> $author->getDescription(),
-            'location' => $author->getLocation(),
-            'date'  => $this->formatDate($author->getCreatedAt()),
-            'social_url' => $this->getSocialUrlForAuthor($author),
-            'links' =>
-                array(
-                    array(
-                        'rel'   => 'self',
-                        'href'  => $this->generateUrl('acme_social_get_author',array('id' => $author->getId()),true),
-                    ),
-                    array(
-                        'rel'   => 'posts',
-                        'href'   => $this->generateUrl('acme_social_get_author_post',array('id' => $author->getId()),true),
-                    ),
-                )
-            );
-    }
-
-    private function getSocialUrlForTweet($elem)
-    {
-        return sprintf("https://twitter.com/%s/status/%s", $elem->getAuthor()->getScreenName(), $elem->getCode() );
-    }
-
-    /**
-     * @param $date \DateTime
-     * @return string
-     */
-    private function formatDate($date)
-    {
-        return $date->format(self::STANDARD_DATE_FORMAT);
-    }
-
-
-
-
-    private function getPaginationData($paginationData, $routeName, $mandatoryParams = array())
-    {
-        $page = $paginationData['current'];
-        $limit= $paginationData['numItemsPerPage'];
-        $pagination = array();
-
-        $pagination['page'] = $page;
-        $pagination['limit'] = $limit;
-        $pagination['totalPage'] = $paginationData['pageCount'];
-        $pagination['totalCount'] = $paginationData['totalCount'];
-
-        $pagination['links'] = array();
-        if (isset($paginationData['previous'])){
-            $elem = array(
-                'rel' => 'prev',
-                'href' =>  $this->generateUrl($routeName, ($mandatoryParams + array('limit'=>$limit, 'page'=>$paginationData['previous'])),true)
-            );
-            $pagination['links'][] = $elem;
-        }
-        if (isset($paginationData['next'])){
-            $elem = array(
-                'rel' => 'next',
-                'href'=>  $this->generateUrl($routeName, ($mandatoryParams + array('limit'=>$limit, 'page'=>$paginationData['next'])),true)
-            );
-            $pagination['links'][] = $elem;
-
-        }
-        return $pagination;
     }
 
     private function getJsonResponse($data)
     {
-        return new JsonResponse($data,200,array('Access-Control-Allow-Origin'=> '*'));
-    }
-
-    private function getSocialUrlForAuthor($author)
-    {
-        return sprintf("https://twitter.com/%s", $author->getScreenName() );
+        return new JsonResponse($data, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
 }
