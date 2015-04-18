@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiController extends Controller
 {
 
-    const STANDARD_DATE_FORMAT = 'Y-m-d H:i';
+    const STANDARD_DATE_FORMAT = 'c';
 
     const PAGE_CODE  = "page";
     const LIMIT_CODE = "limit";
