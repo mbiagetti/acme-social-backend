@@ -3,9 +3,23 @@
 namespace SocialBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Doctrine\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
 class TagControllerTest extends WebTestCase
 {
+    public static function setUpBeforeClass()
+    {
+        $client = static::createClient();
+        $em = $client->getContainer()->get('doctrine')->getManager();
+
+        $loader = new Loader();
+        $purger = new ORMPurger();
+        $executor = new ORMExecutor($em, $purger);
+        $executor->execute($loader->getFixtures());
+    }
+
     protected function getClient()
     {
         // Create a new client to browse the application

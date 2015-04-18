@@ -27,7 +27,8 @@
         "phake/phake": "dev-master",
         "phpunit/phpunit": "4.2.*",
         "sensio/generator-bundle": "~2.3",
-        "pugx/generator-bundle": "2.4.*"
+        "pugx/generator-bundle": "2.4.*",
+        "doctrine/doctrine-fixtures-bundle": "2.2.*"
     },
     "scripts": {
         "post-root-package-install": [
