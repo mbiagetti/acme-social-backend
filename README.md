@@ -1,6 +1,9 @@
 
 # Acme Demo Social Application
 
+[![Build Status](https://api.travis-ci.org/mbiagetti/acme-social-backend.png)](http://travis-ci.org/mbiagetti/acme-social-backend)
+
+
 ## Overview
 
 App for Collect tweet content.
