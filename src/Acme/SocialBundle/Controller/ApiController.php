@@ -33,9 +33,9 @@ class ApiController extends Controller
                 "title" => "Acme Demo Api Service",
                   "Description" => "Only for fun!",
                   "endpoints" => array(
-                      "posts" => $this->generateUrl("acme_social_all_posts"),
-                      "authors" => $this->generateUrl("acme_social_all_authors"),
-                      "tags" => $this->generateUrl("acme_social_all_tags")
+                      "posts" => $this->generateUrl("acme_social_all_posts", array(), true),
+                      "authors" => $this->generateUrl("acme_social_all_authors", array(), true),
+                      "tags" => $this->generateUrl("acme_social_all_tags", array(), true)
                   )
               )
           );

@@ -8,14 +8,14 @@ App for Collect tweet content.
 
 ## Demo
 
-API [http://backend.biagetti.info/api](http://backend.biagetti.info/api)
+API [http://be.biagetti.info/api](http://be.biagetti.info/api)
 
-BACKEND: [http://backend.biagetti.info/admin](http://backend.biagetti.info/admin)
+BACKEND: [http://be.biagetti.info/admin](http://be.biagetti.info/admin)
 
 - Sample(ReadOnly) admin user: guest/guest
 - Admin user: admin/*****
 
-A angularjs frontend client is located at [http://social.biagetti.info](http://social.biagetti.info)
+An angularjs frontend client is located at [http://fe.biagetti.info](http://fe.biagetti.info)
 
 
 ## Configuration:
