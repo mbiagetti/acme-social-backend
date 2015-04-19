@@ -1,0 +1,5 @@
+server '188.166.118.18', :app, :web, :primary => true
+set :deploy_to,     "/home/sviluppo/acme-social-backend"
+set :user,          "sviluppo"
+set :use_sudo,      false
+set :branch,        "master"
