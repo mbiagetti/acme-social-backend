@@ -62,3 +62,5 @@ Main End-point:
 - GET    /api/tags/{id}/posts       All Post of a specific Tag
 
 
+
+* only for fun
